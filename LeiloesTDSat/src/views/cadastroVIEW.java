@@ -1,12 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+package views;
 
-/**
- *
- * @author Adm
- */
+
+import metodos.ProdutosDTO;
+import metodos.ProdutosDAO;
+import views.listagemVIEW;
+
+
 public class cadastroVIEW extends javax.swing.JFrame {
 
     /**
@@ -140,6 +139,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        
         ProdutosDTO produto = new ProdutosDTO();
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
@@ -150,6 +150,10 @@ public class cadastroVIEW extends javax.swing.JFrame {
         
         ProdutosDAO produtodao = new ProdutosDAO();
         produtodao.cadastrarProduto(produto);
+        
+        cadastroNome.setText("");
+        cadastroValor.setText("");
+         
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
