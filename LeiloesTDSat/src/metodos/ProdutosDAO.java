@@ -88,6 +88,7 @@ public class ProdutosDAO {
         }
         return listaProdutos;
     }
+    
 
     public void desconectar() {
         try {
@@ -96,5 +97,34 @@ public class ProdutosDAO {
 
         }
     }
+    public List<ProdutosDTO> listarProdutosVendidos() {
+    List<ProdutosDTO> listaProdutos = new ArrayList<>();
+
+    if (conn == null) {
+        JOptionPane.showMessageDialog(null,
+                "Não há conexão com o banco de dados",
+                "Erro", JOptionPane.ERROR_MESSAGE);
+        return listaProdutos;
+    }
+
+    String sql = "SELECT * FROM produtos WHERE status = 'vendido'";
+    try (PreparedStatement st = this.conn.prepareStatement(sql); 
+         ResultSet rs = st.executeQuery()) {
+
+        while (rs.next()) {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(rs.getInt("id"));
+            produto.setNome(rs.getString("nome"));
+            produto.setValor(rs.getInt("valor"));
+            produto.setStatus(rs.getString("status"));
+            listaProdutos.add(produto);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null,
+                "Erro ao listar produtos vendidos: " + e.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+    return listaProdutos;
+}
 
 }
