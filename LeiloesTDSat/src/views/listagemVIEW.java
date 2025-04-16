@@ -133,11 +133,66 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        // String id = id_produto_venda.getText();
+        try {
+        // 1. Obter e validar o ID
+        String idText = id_produto_venda.getText().trim();
+        
+        if (idText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, informe o ID do produto que deseja vender", "Campo Vazio", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // 2. Converter para número
+        int idProduto;
+        try {
+            idProduto = Integer.parseInt(idText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID deve ser um número válido", "ID Inválido", JOptionPane.ERROR_MESSAGE);
+            id_produto_venda.setText("");
+            return;
+        }
+        
+        // 3. Confirmar com o usuário
+        int confirm = JOptionPane.showConfirmDialog(
+            this, 
+            "Deseja marcar o produto ID " + idProduto + " como vendido?",
+            "Confirmar Venda",
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        // 4. Executar a venda
+        ProdutosDAO produtosdao = new ProdutosDAO();
+        boolean sucesso = produtosdao.venderProduto(idProduto); 
+        // 5. Mostrar resultado
+        if (sucesso) {
+            JOptionPane.showMessageDialog(this, 
+                "Produto vendido com sucesso!", 
+                "Sucesso", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            // Atualizar a tabela se necessário
+            mostrarProdutos();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Produto não encontrado ou já vendido", 
+                "Aviso", 
+                JOptionPane.WARNING_MESSAGE);
+        }
+        
+        // 5. Limpar campo
+        id_produto_venda.setText("");
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Erro ao processar venda: " + e.getMessage(), 
+            "Erro", 
+            JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
 
-        // ProdutosDAO produtosdao = new ProdutosDAO();
-        //  produtosdao.venderProduto(Integer.parseInt(id));
-        //listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed

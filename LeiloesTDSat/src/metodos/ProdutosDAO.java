@@ -48,6 +48,18 @@ public class ProdutosDAO {
 
     }
 
+    public boolean venderProduto(int id) {
+        String sql = "UPDATE produtos SET status = 'vendido' WHERE id = ? AND status = 'a venda'";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao vender produto: " + e.getMessage());
+            return false;
+        }
+    }
+
     public List<ProdutosDTO> listarProdutos() {
         List<ProdutosDTO> listaProdutos = new ArrayList<>();
 
@@ -84,4 +96,5 @@ public class ProdutosDAO {
 
         }
     }
+
 }
